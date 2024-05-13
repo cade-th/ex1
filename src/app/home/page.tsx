@@ -1,38 +1,36 @@
-"use client"; // Import required modules from React and Next.js
 import React, { useEffect, useState } from "react";
 
 type Comment = {
-    id: number; // Assuming there's an ID
+    id: number;
     name: string;
     email: string;
 };
 
-// This is the main component for the Home page
+// API response structure type declaration
+type ApiResponse = Comment[];
+
 export default function HomePage() {
     const [comments, setComments] = useState<Comment[]>([]);
 
     useEffect(() => {
-        // Define an async function inside the useEffect
         const fetchComments = async () => {
             try {
                 const response = await fetch('https://jsonplaceholder.typicode.com/comments');
-                const userData: Comment[] = await response.json();
+                // Cast the response JSON to the ApiResponse type
+                const userData: ApiResponse = await response.json() as ApiResponse;
                 setComments(userData.map(({ id, name, email }) => ({ id, name, email })));
             } catch (error) {
                 console.error('Failed to fetch comments:', error);
-                // Handle errors, e.g., by setting an error state or logging
+                // Optionally, handle the error by updating component state
             }
         };
-    
-        // Call the async function
+
         fetchComments();
     }, []);
-    
 
     return (
         <div>
             <h1>Welcome to the Home Page</h1>
-          
             {comments.length > 0 ? (
                 <ul>
                     {comments.map((comment) => (
@@ -45,4 +43,3 @@ export default function HomePage() {
         </div>
     );
 }
-
