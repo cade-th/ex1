@@ -12,12 +12,22 @@ export default function HomePage() {
     const [comments, setComments] = useState<Comment[]>([]);
 
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/comments')
-        .then(response => response.json())
-        .then((userData: Comment[]) => {
-            setComments(userData.map(({ id, name, email }) => ({ id, name, email })));
-        })
+        // Define an async function inside the useEffect
+        const fetchComments = async () => {
+            try {
+                const response = await fetch('https://jsonplaceholder.typicode.com/comments');
+                const userData: Comment[] = await response.json();
+                setComments(userData.map(({ id, name, email }) => ({ id, name, email })));
+            } catch (error) {
+                console.error('Failed to fetch comments:', error);
+                // Handle errors, e.g., by setting an error state or logging
+            }
+        };
+    
+        // Call the async function
+        fetchComments();
     }, []);
+    
 
     return (
         <div>
