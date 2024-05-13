@@ -26,7 +26,7 @@ export default function HomePage() {
             }
         };
 
-        fetchComments();
+        void fetchComments();
     }, []);
 
     return (
